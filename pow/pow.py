@@ -54,6 +54,20 @@ class POW:
         return bytes(0)
 
     @staticmethod
+    def pow_nonce_random_range_fast(target: bytes, data: bytes, tries: int) -> bytes:
+        """
+        pow_nonce_random_range: Calculates a nonce from diff + data from
+                                a random range.
+        :param tries:           Number of tries.
+        """
+        for _ in range(0, tries):
+            nonce = get_random_bytes(8)
+            out = POW.pow_hash256(nonce, data)
+            if POW.quick_greater(out, target):
+                return nonce
+        return bytes(0)
+
+    @staticmethod
     def pow_nonce_num_range(diff: int, data: bytes, begin: int, end: int) -> bytes:
         """
         pow_nonce_num_range:    Calculates a nonce from diff + data from
@@ -76,8 +90,7 @@ class POW:
         """
         pow_hash256_from_hash:  Blake2b object update and digest with nonce + data.
         """
-        hash.update(nonce)
-        hash.update(data)
+        hash.update(nonce + data)
         return hash.digest()
 
     @staticmethod
@@ -85,10 +98,8 @@ class POW:
         """
         pow_hash256:            Blake2b hash in 32 bit from nonce + data.
         """
-        # 32 bit
         hash = blake2b(digest_size=32)
-        hash.update(nonce)
-        hash.update(data)
+        hash.update(nonce + data)
         return hash.digest()
 
     @staticmethod

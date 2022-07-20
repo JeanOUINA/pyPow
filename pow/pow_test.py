@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #  pow_test.py Author "epy3" Date 18.07.2022
-from pow import POW
 from hashlib import blake2b
+from pow import POW
 import pytest
 
 
 """ NOTE: Some test can fail due to randomness. """
-
 
 def test_difficulty_to_target_true():
     difficulty = 67108863
@@ -118,8 +117,6 @@ def test_get_pow_nonce():
 
     # get nonce
     nonce = POW.get_pow_nonce(diff, data)
-    print(nonce.hex())
-
     # check nonce
     assert POW.check_pow_nonce(diff, nonce, data)
 
@@ -132,8 +129,6 @@ def test_map_pow_nonce_range():
 
     # get nonce
     nonce = POW.pow_nonce_random_range(diff, data, 1000000)
-    print(nonce.hex())
-
     # check nonce
     assert POW.check_pow_nonce(diff, nonce, data)
 
@@ -146,8 +141,6 @@ def test_map_pow_nonce_numbers():
 
     # get nonce
     nonce = POW.pow_nonce_num_range(diff, data, 0, 100000)
-    print(nonce.hex())
-
     # check nonce
     assert POW.check_pow_nonce(diff, nonce, data)
 

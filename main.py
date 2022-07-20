@@ -4,8 +4,11 @@
 
 from fastapi import FastAPI
 from pydantic import BaseModel
+from pow.pow import POW
+import multiprocessing as mp
 
 app = FastAPI()
+
 
 class POW_request(BaseModel):
     jsonrpc: str
@@ -15,5 +18,6 @@ class POW_request(BaseModel):
 
 
 @app.post("/api/generatework/")
-async def create_item(req: POW_request):
+def create_item(req: POW_request):
+    # param 0 = diff + param 1 = hash
     return {"jsonrpc": req.jsonrpc, "id": req.id, "result": "test"}
