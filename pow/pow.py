@@ -17,8 +17,11 @@ class POW:
         :return:                Returns true if nonce is good.
         """
         target = POW.difficulty_to_target(diff)
-        out = POW.pow_hash256(nonce, data)
-        return POW.quick_greater(out, int.to_bytes(target, 32, "big"))
+        target = int.to_bytes(target, 32, "big")
+
+        hash = POW.pow_hash256(nonce, data)
+
+        return POW.quick_greater(hash, target)
 
     @staticmethod
     def get_pow_nonce(diff: int, data: bytes) -> bytes:
@@ -31,9 +34,10 @@ class POW:
 
         while len(target) == 32:
             nonce = get_random_bytes(8)
-            out = POW.pow_hash256(nonce, data)
-            if POW.quick_greater(out, target):
+            hash = POW.pow_hash256(nonce, data)
+            if POW.quick_greater(hash, target):
                 return nonce
+
         return bytes(0)
 
     @staticmethod
@@ -48,9 +52,10 @@ class POW:
 
         for _ in range(0, tries):
             nonce = get_random_bytes(8)
-            out = POW.pow_hash256(nonce, data)
-            if POW.quick_greater(out, target):
+            hash = POW.pow_hash256(nonce, data)
+            if POW.quick_greater(hash, target):
                 return nonce
+
         return bytes(0)
 
     @staticmethod
@@ -62,9 +67,10 @@ class POW:
         """
         for _ in range(0, tries):
             nonce = get_random_bytes(8)
-            out = POW.pow_hash256(nonce, data)
-            if POW.quick_greater(out, target):
+            hash = POW.pow_hash256(nonce, data)
+            if POW.quick_greater(hash, target):
                 return nonce
+
         return bytes(0)
 
     @staticmethod
@@ -80,9 +86,10 @@ class POW:
 
         for i in range(begin, end):
             nonce = int.to_bytes(i, 8, "big")
-            out = POW.pow_hash256(nonce, data)
-            if POW.quick_greater(out, target):
+            hash = POW.pow_hash256(nonce, data)
+            if POW.quick_greater(hash, target):
                 return nonce
+
         return bytes(0)
 
     @staticmethod
@@ -91,6 +98,7 @@ class POW:
         pow_hash256_from_hash:  Blake2b object update and digest with nonce + data.
         """
         hash.update(nonce + data)
+
         return hash.digest()
 
     @staticmethod
@@ -100,6 +108,7 @@ class POW:
         """
         hash = blake2b(digest_size=32)
         hash.update(nonce + data)
+
         return hash.digest()
 
     @staticmethod
@@ -108,18 +117,15 @@ class POW:
         difficulty_to_target:   Calculates given  difficulty to target:
                                 target = 2^256 / (1 + (1 / difficulty))
         """
-        out = 1 / diff
-        out += 1
-        return int(pow(2, 256) / out)
+        return int(pow(2, 256) / (1 + (1 / diff)))
 
     @staticmethod
     def target_to_difficulty(tar: int) -> int:
         """
-        target_to_difficulty:   Calculates given target to difficulty
+        target_to_difficulty:   Calculates given target to difficulty:
+                                diff = (1 / (2^256 / target)) - 1
         """
-        out = pow(2, 256) / tar
-        out -= 1
-        return int(1 / out)
+        return int(1 / ((pow(2, 256) / tar) - 1))
 
     @staticmethod
     def quick_inc(arr: bytearray) -> bytes:
@@ -145,6 +151,7 @@ class POW:
                 return True
             if byte_x[i] < byte_y[i]:
                 return False
+
         return False
 
     @staticmethod
@@ -156,6 +163,7 @@ class POW:
         ret = bytearray(data)
         while len(ret) < 32:
             ret.insert(0, 0) if left else ret.append(0)
+
         return ret
 
 
