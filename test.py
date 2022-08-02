@@ -2,40 +2,50 @@
 # -*- coding: utf-8 -*-
 #  test.py Author "epy3" Date 21.07.2022
 from pow.pow import POW
-import multiprocessing as mp
+from gpu.opencl import OPENCL
 
-async_result = 0
+import timeit
 
-def get_nonce(diff: bytes, data: bytes):
-    return POW.pow_nonce_random_range_fast(diff, data, 10000)
+LOOPS = 1
 
-def get_nonce_cb(result):
-    global async_result
-    async_result += int.from_bytes(result, 'big')
-
-
-def generate_result(diff: bytes, data: bytes):
-    global async_result
-
-    while not async_result:
-        pool = mp.Pool(mp.cpu_count())
-        for _ in range(mp.cpu_count()):
-            pool.apply_async(get_nonce, args=(diff, data), callback=get_nonce_cb)
-        pool.close()
-        pool.join()
-
-    return str(async_result)
-
-
-if __name__ == "__main__":
-    params = ["67108863", "35c82fe515c2982c5ef75226eab35f3fb14952f8ef59005f02893cd3dca4db09"]
-
-    diff = int(params[0])
+def main():
+    params = [
+        67108863,
+        "118CC2121C3E641059BC1C2CFC45666C718CC2121C3E641059BC1C2CFC45666C",
+    ]
+    diff = params[0]
     data = bytearray.fromhex(params[1])
 
-    target = POW.difficulty_to_target(diff)
-    target = int.to_bytes(target, 32, "big")
+    # test with cpu
+    start = timeit.default_timer()
 
-    nonce = generate_result(target, data)
+    for _ in range(0, LOOPS):
+        result = POW.get_pow_nonce(diff, data)
+        print(f"CPU: RESULT: {POW.check_pow_nonce(diff, result, data)}")
 
-    print(nonce)
+    stop = timeit.default_timer()
+    print("CPU:", stop - start)
+    cpu = stop - start
+
+    # test with gpu
+    a = OPENCL("gpu/blake.cl")
+    a.set_target(POW.difficulty_to_target(diff))
+    a.set_data(params[1])
+
+    # stat gpu test
+    start = timeit.default_timer()
+    for _ in range(0, LOOPS):
+        while a.get_result() == 0:
+            a.work()
+        print(f"CPU: RESULT: {POW.check_pow_nonce(diff, a.get_result_bytes(), data)}")
+        a.reset()
+
+    stop = timeit.default_timer()
+    print("GPU:", (stop - start))
+    gpu = stop - start
+
+    if gpu < cpu:
+        print(f"GPU: {cpu // gpu}x faster")
+
+if __name__ == "__main__":
+    main()

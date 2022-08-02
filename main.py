@@ -4,8 +4,6 @@
 
 from fastapi import FastAPI
 from pydantic import BaseModel
-from pow.pow import POW
-import multiprocessing as mp
 
 app = FastAPI()
 

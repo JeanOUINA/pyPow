@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #  pow_test.py Author "epy3" Date 18.07.2022
+
 from hashlib import blake2b
 from pow import POW
 import pytest
 
 
 """ NOTE: Some test can fail due to randomness. """
+
 
 def test_difficulty_to_target_true():
     difficulty = 67108863

@@ -370,7 +370,6 @@ __kernel void vitechain_work (__global ulong * nonce, __global uchar * data, __g
 
     blake2b_state state;
     blake2b_init (&state, 32);
-    // nonce + data
     blake2b_update (&state, (uchar *) &new_nonce, 8);
     blake2b_update (&state, temp_data, 32);
     blake2b_final (&state, temp_result, 32);
