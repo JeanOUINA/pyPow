@@ -2,26 +2,28 @@
 # -*- coding: utf-8 -*-
 #  array.py Author "epy3" Date 22.07.2022
 
-import numpy as np
-import pyopencl as cl
-import pyopencl.array as pycl_array
+from opencl import OPENCL
+from pow import POW
 
-context = cl.create_some_context()
-queue = cl.CommandQueue(context)
 
-mf = cl.mem_flags
+def main():
+    # 1024 threads
+    a = OPENCL(1024 * 1024)
 
-a = 0x00000
-a = a.to_bytes(32, 'big')
-b = 0x0000f
-b = b.to_bytes(32, 'big')
+    # diff & data
+    diff = 67108863
+    data = "118CC2121C3E641059BC1C2CFC45666C718CC2121C3E641059BC1C2CFC45666C"
 
-prg = cl.Program(context, open('blake2b.cl').read()).build()
+    # set diff & data
+    a.set_target(POW.difficulty_to_target(diff))
+    a.set_data(data)
 
-a_gpu = cl.Buffer(context, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=a)
-b_gpu = cl.Buffer(context, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=b)
+    while a.get_result() == 0:
+        a.work()
 
-prg.blake256_hash_block(queue, [0,0], None, a_gpu, b_gpu)
+    # check if result is valid
+    print(POW.check_pow_nonce(diff, a.get_result_bytes(), a.str_data_to_bytes(data)))
 
-print("a: {}".format(a))
-print("b: {}".format(b))
+
+if __name__ == "__main__":
+    main()
