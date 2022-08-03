@@ -358,7 +358,7 @@ static bool quick32bytesGreater (uchar *left, __global  uchar * right)  {
   return true;
 }
 
-__kernel void vitechain_work (__global ulong * nonce, __global uchar * data, __global uchar * target, __global ulong * result)
+__kernel void work (__global ulong * nonce, __global uchar * data, __global uchar * target, __global ulong * result)
 {
     int const thread = get_global_id (0);
 

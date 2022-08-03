@@ -3,34 +3,38 @@
 #  main.py Author "epy3" Date 18.07.2022
 
 from fastapi import FastAPI
-from pydantic import BaseModel
 from gpu.opencl import OPENCL
 from pow.pow import POW
-import base64
+from util.helper import Helper
+from util.pow_class import POW_data
 
-app = FastAPI()
-
-#OPENCL settings
-ocl = OPENCL("gpu/blake.cl")
-
-
-class POW_request(BaseModel):
-    jsonrpc: str
-    id: int
-    method: str
-    params: list
+APP = FastAPI()
+OCL = OPENCL("gpu/blake.cl")
 
 
-@app.post("/api/work/")
-def run_pow(req: POW_request):
-    ocl.reset()
-    ocl.set_workgroup_size(256)
-    ocl.set_threads(4096 * ocl.get_workgroup_size())
+@APP.post("/")
+def run_pow(req: POW_data):
+    """
+    Processing API Post.
+    """
+    # check for valid input
+    if (
+        not Helper.is_int(req.params[0])
+        or int(req.params[0]) < 1
+        or int(req.params[0]) > 67108863
+        or not Helper.is_hex(req.params[1])
+    ):
+        return {"jsonrpc": req.jsonrpc, "id": req.id, "result": "input error"}
 
-    ocl.set_target(POW.difficulty_to_target(int(req.params[0])))
-    ocl.set_data(req.params[1])
-    while ocl.get_result() == 0:
-        ocl.work()
+    # set target, set data
+    OCL.set_target(POW.difficulty_to_target(int(req.params[0])))
+    OCL.set_data(req.params[1])
 
-    result = base64.b64encode(ocl.get_result_bytes())
+    # find nonce
+    result = OCL.work()
+
     return {"jsonrpc": req.jsonrpc, "id": req.id, "result": result}
+
+
+if __name__ == "__main__":
+    pass
