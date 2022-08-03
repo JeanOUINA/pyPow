@@ -10,7 +10,7 @@ LOOPS = 1
 
 def main():
     params = [
-        67108863,
+        671088631,
         "118CC2121C3E641059BC1C2CFC45666C718CC2121C3E641059BC1C2CFC45666C",
     ]
     diff = params[0]
@@ -19,7 +19,7 @@ def main():
     # test with cpu
     start = timeit.default_timer()
 
-    for _ in range(0, LOOPS):
+    for _ in range(0, 0):
         result = POW.get_pow_nonce(diff, data)
         print(f"CPU: RESULT: {POW.check_pow_nonce(diff, result, data)}")
 

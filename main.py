@@ -4,8 +4,14 @@
 
 from fastapi import FastAPI
 from pydantic import BaseModel
+from gpu.opencl import OPENCL
+from pow.pow import POW
+import base64
 
 app = FastAPI()
+
+#OPENCL settings
+ocl = OPENCL("gpu/blake.cl")
 
 
 class POW_request(BaseModel):
@@ -15,7 +21,16 @@ class POW_request(BaseModel):
     params: list
 
 
-@app.post("/api/generatework/")
-def create_item(req: POW_request):
-    # param 0 = diff + param 1 = hash
-    return {"jsonrpc": req.jsonrpc, "id": req.id, "result": "test"}
+@app.post("/api/work/")
+def run_pow(req: POW_request):
+    ocl.reset()
+    ocl.set_workgroup_size(256)
+    ocl.set_threads(4096 * ocl.get_workgroup_size())
+
+    ocl.set_target(POW.difficulty_to_target(int(req.params[0])))
+    ocl.set_data(req.params[1])
+    while ocl.get_result() == 0:
+        ocl.work()
+
+    result = base64.b64encode(ocl.get_result_bytes())
+    return {"jsonrpc": req.jsonrpc, "id": req.id, "result": result}
