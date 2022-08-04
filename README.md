@@ -1,17 +1,20 @@
 ## pyPowie
 
 #### Info
-Standalone pyopencl POW server for vite.
+Standalone pyopencl POW server for Vite.
+Only tested on Arch linux.
 
 ![pyPowie](https://github.com/epy3/py-pow/actions/workflows/python.yml/badge.svg?branch=main)
 
 #### Tasks
 - [x] Compute correct POW on CPU
-- [x] Compute correct POW on GPU
 - [x] FastAPI endpoint
-- [ ] More function checks
-- [ ] Multprocessing
-- [ ] Multiple compute servers support
+- [x] Compute correct POW on GPU
+- [x] Working example
+- [ ] Multithreading for CPU
+- [ ] Logging system
+- [ ] Multiple GPU support
+- [ ] Pool multiple instances
 
 #### Install and run?
 ```
@@ -34,6 +37,6 @@ Set PoW Settings to your server ip and port (if not using port 80).
 
 #### Docs
 ```
-FastAPI docs at http://localhost/docs | http://serverip/docs
+FastAPI Swagger UI docs at http://localhost:port/docs | http://serverip:port/docs
 ```
 
