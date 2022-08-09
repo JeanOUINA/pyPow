@@ -2,9 +2,9 @@
 <img align="right" src="https://github.com/epy3/pyPow/blob/main/assets/logo.png" width="250">
 
 ### About
-Standalone PoW server in python using OpenCL and FastAPI.<br>
-Only tested on linux platform.<br>
-Logo (why?) created by my creative friend Dali ;)<br>
+Standalone PoW server in Python using OpenCL & FastAPI.<br>
+Only tested on linux platforms. (debian/ubuntu/arch)<br>
+Logo <sub><sup>(why?)</sup></sub> created by my creative friend Dall-e ;)<br>
 
 ![pyPow](https://github.com/epy3/py-pow/actions/workflows/python.yml/badge.svg?branch=main)
 
@@ -20,19 +20,23 @@ Logo (why?) created by my creative friend Dali ;)<br>
 - [x] Working example
 - [x] Simple logging system
 - [ ] Pool multiple instances
-- [ ] Multithreading for multiple API calls*
+- [ ] Handle synchronous API calls (multithread/queue)
 
 ### Install and run
+
+A simple tutorial with screenshots is available at https://github.com/epy3/pyPow/tree/main/howto#readme
+
 ```
 git clone https://github.com/epy3/pyPow.git
 cd pyPow
 pip install -r requirements.txt
-uvicorn main:APP --port 80
+uvicorn main:APP --host 127.0.0.1 --port 80
+change host(ip) and port if needed
 ```
 
 ### How to use
 ```
-Set PoW Settings to your server ip and port (if not using port 80).
+In app: set PoW Settings to your server ip and port (if not using port 80).
 ```
 
 <p float="left">
