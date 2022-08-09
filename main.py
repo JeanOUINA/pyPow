@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #  main.py Author "epy3" Date 09.08.2022
+
 from fastapi import FastAPI, Request
 from gpu.opencl import OPENCL
 from log.logger import LOGGER
@@ -40,4 +41,4 @@ def run_pow(req: POW_data, client: Request):
 
 
 if __name__ == "__main__":
-    pass
+    exit()

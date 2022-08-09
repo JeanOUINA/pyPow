@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#  opencl.py Author "epy3" Date 09.08.2022
+
 import numpy as np
 import pyopencl as cl
 import pyopencl.array as arr

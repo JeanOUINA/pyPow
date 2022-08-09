@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #  nonce.py Author "epy3" Date 09.08.2022
+
 import requests
 import json
 import asyncio
@@ -79,4 +80,4 @@ class NONCE:
 
 
 if __name__ == "__main__":
-    pass
+    exit()

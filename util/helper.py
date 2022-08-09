@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 #  helper.py Author "epy3" Date 03.08.2022
 
-
 class Helper:
     @staticmethod
     def valid_input(diff: str, data: str):
@@ -44,3 +43,6 @@ class Helper:
             if not number.isdigit():
                 return False
         return True
+
+if __name__ == "__main__":
+    exit()

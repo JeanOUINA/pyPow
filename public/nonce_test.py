@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #  nonce_test.py Author "epy3" Date 09.08.2022
+
 import asyncio
 import pytest
 from nonce import NONCE
@@ -38,4 +39,4 @@ def test_race_err():
 
 
 if __name__ == "__main__":
-    pass
+    exit()

@@ -148,4 +148,4 @@ def test_map_pow_nonce_numbers():
 
 
 if __name__ == "__main__":
-    pass
+    exit()
