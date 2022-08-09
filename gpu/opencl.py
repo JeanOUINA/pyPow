@@ -29,7 +29,7 @@ class OPENCL:
         )
         self._threads = 4096 * self._work_group
 
-    async def work(self) -> bytes:
+    def work(self) -> bytes:
         """
         work:               Finds and returns a valid nonce.
         :return:            Returns the nonce as base64.

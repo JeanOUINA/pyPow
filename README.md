@@ -1,10 +1,15 @@
 ## pyPowie
 
 #### Info
-Standalone pyopencl POW server for Vite.
+Standalone pyopencl PoW server.
 Only tested on Arch linux.
 
 ![pyPowie](https://github.com/epy3/py-pow/actions/workflows/python.yml/badge.svg?branch=main)
+
+#### Requirements
+- [x] Host with a GPU
+- [x] OpenCL driver
+- [x] Python3
 
 #### Tasks
 - [x] Compute correct POW on CPU
@@ -12,7 +17,7 @@ Only tested on Arch linux.
 - [x] Compute correct POW on GPU
 - [x] Working example
 - [ ] Multithreading for CPU
-- [ ] Logging system
+- [X] Simple logging system
 - [ ] Multiple GPU support
 - [ ] Pool multiple instances
 
