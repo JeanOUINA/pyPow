@@ -2,7 +2,7 @@
 <img align="right" src="https://github.com/epy3/pyPow/blob/main/assets/logo.png" width="250">
 
 ### About
-Standalone PoW server in Python using OpenCL & FastAPI.<br>
+Standalone PoW server in Python using OpenCL & FastAPI for Vite.<br>
 Only tested on linux platforms. (debian/ubuntu/arch)<br>
 Logo <sub><sup>(why?)</sup></sub> created by my creative friend Dall-e ;)<br>
 

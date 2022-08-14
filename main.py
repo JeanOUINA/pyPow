@@ -24,8 +24,9 @@ def run_pow(req: POW_data, client: Request):
     diff = req.params[0]
     data = req.params[1]
 
-    # log request
-    LOG.info(f"ip={client.client.host} diff={diff} data={data}")
+    # log the request
+    if client.client != None:
+        LOG.info(f"ip={client.client.host} diff={diff} data={data}")
 
     # validate input
     if not Helper.valid_input(diff, data):
