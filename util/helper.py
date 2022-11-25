@@ -11,7 +11,7 @@ class Helper:
         """
         if (
             not Helper.is_int(diff)
-            or not 1 <= int(diff) <= 76108864
+            or not 1 <= int(diff) <= 1000108864
             or not Helper.is_hex(data)
             or len(data) != 64
         ):
